@@ -114,7 +114,7 @@ class Flow(stateobject.StateObject):
         f = super().copy()
         f.id = str(uuid.uuid4())
         f.live = False;
-        if self.reply != None:
+        if self.reply is not None:
             f.reply = controller.DummyReply()
         return f
 
