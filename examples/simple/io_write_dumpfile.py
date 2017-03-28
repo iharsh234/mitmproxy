@@ -7,23 +7,23 @@ to multiple files in parallel.
 """
 import random
 import sys
-from mitmproxy import io
-
+from mitmproxy import io , http
+import typing
 
 class Writer:
-    def __init__(self, path):
+    def __init__(self, path : str) -> None:
         if path == "-":
             f = sys.stdout
         else:
             f = open(path, "wb")
         self.w = io.FlowWriter(f)
 
-    def response(self, flow):
+    def response(self, flow: http.HTTPFlow) -> typing.Any:
         if random.choice([True, False]):
             self.w.add(flow)
 
 
-def load(l):
+def start():
     if len(sys.argv) != 2:
         raise ValueError('Usage: -s "flowriter.py filename"')
-    l.boot_into(Writer(sys.argv[1]))
+    return Writer(sys.argv[1])

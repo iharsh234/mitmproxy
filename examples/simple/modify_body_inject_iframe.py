@@ -2,13 +2,15 @@
 # (this script works best with --anticache)
 import sys
 from bs4 import BeautifulSoup
+from mitmproxy import http
+import typing
 
 
 class Injector:
-    def __init__(self, iframe_url):
+    def __init__(self, iframe_url : str) -> None:
         self.iframe_url = iframe_url
 
-    def response(self, flow):
+    def response(self, flow: http.HTTPFlow) -> typing.Any:
         if flow.request.host in self.iframe_url:
             return
         html = BeautifulSoup(flow.response.content, "html.parser")
@@ -23,7 +25,7 @@ class Injector:
             flow.response.content = str(html).encode("utf8")
 
 
-def load(l):
+def start():
     if len(sys.argv) != 2:
         raise ValueError('Usage: -s "iframe_injector.py url"')
-    return l.boot_into(Injector(sys.argv[1]))
+    return Injector(sys.argv[1])
