@@ -293,8 +293,11 @@ def refresh_set_cookie_header(c, delta):
         A refreshed Set-Cookie string
     """
 
-    name, value, attrs = parse_set_cookie_header(c)[0]
-    if not name or not value:
+    header = parse_set_cookie_header(c)
+    if header:
+       name, value, attrs = header[0]
+
+    if not header or not name or not value:
         raise ValueError("Invalid Cookie")
 
     if "expires" in attrs:
