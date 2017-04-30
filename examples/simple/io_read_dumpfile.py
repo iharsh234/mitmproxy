@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+
+# type: ignore
 #
 # Simple script showing how to read a mitmproxy dump file
 #
-
-from mitmproxy import io
+from mitmproxy import io,flow
 from mitmproxy.exceptions import FlowReadException
 import pprint
 import sys
@@ -14,7 +15,7 @@ with open(sys.argv[1], "rb") as logfile:
     pp = pprint.PrettyPrinter(indent=4)
     try:
         for f in freader.stream():
-            print(f)
+            print(f)  # type: flow.Flow
             print(f.request.host)
             pp.pprint(f.get_state())
             print("")
