@@ -4,13 +4,14 @@ import queue
 
 from . import pathod
 from mitmproxy.types import basethread
+from typing import List , Dict
 
 
 class Daemon:
     IFACE = "127.0.0.1"
 
-    def __init__(self, ssl=None, **daemonargs):
-        self.q = queue.Queue()
+    def __init__(self, ssl=None, **daemonargs) -> None:
+        self.q = queue.Queue() # type: queue.Queue
         self.logfp = io.StringIO()
         daemonargs["logfp"] = self.logfp
         self.thread = _PaThread(self.IFACE, self.q, ssl, daemonargs)
@@ -25,18 +26,18 @@ class Daemon:
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback) -> bool:
         self.logfp.truncate(0)
         self.shutdown()
         return False
 
-    def p(self, spec):
+    def p(self, spec: str) -> str:
         """
             Return a URL that will render the response in spec.
         """
         return "%s/p/%s" % (self.urlbase, spec)
 
-    def text_log(self):
+    def text_log(self) -> str:
         return self.logfp.getvalue()
 
     def wait_for_silence(self, timeout=5):
@@ -62,7 +63,7 @@ class Daemon:
             return None
         return l[-1]
 
-    def log(self):
+    def log(self) -> List[Dict]:
         """
             Return the log buffer as a list of dictionaries.
         """

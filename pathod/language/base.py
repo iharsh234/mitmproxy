@@ -3,11 +3,12 @@ import os
 import abc
 import functools
 import pyparsing as pp
-
 from mitmproxy.utils import strutils
 from mitmproxy.utils import human
-
+from typing import List, Tuple , Union , Optional , Dict, Type
 from . import generators, exceptions
+from .websockets import WebsocketFrame
+from .language.http2 import Response
 
 
 class Settings:
@@ -65,7 +66,7 @@ class Token:
     """
         A token in the specification language. Tokens are immutable. The token
         classes have no meaning in and of themselves, and are combined into
-        Components and Actions to build the language.
+        tos and Actions to build the language.
     """
     __metaclass__ = abc.ABCMeta
 
@@ -84,7 +85,7 @@ class Token:
         return None
 
     @property
-    def unique_name(self):
+    def unique_name(self) -> Optional[str]:
         """
             Controls uniqueness constraints for tokens. No two tokens with the
             same name will be allowed. If no uniquness should be applied, this
@@ -334,7 +335,7 @@ class OptionsOrValue(_Component):
         Can be any of a specified set of options, or a value specifier.
     """
     preamble = ""
-    options = []
+    options = []  #type: List
 
     def __init__(self, value):
         # If it's a string, we were passed one of the options, so we lower-case
@@ -376,7 +377,7 @@ class OptionsOrValue(_Component):
 
 
 class Integer(_Component):
-    bounds = (None, None)
+    bounds = (None, None)  # type: Tuple[Union[int, None], Union[int , None]]
     preamble = ""
 
     def __init__(self, value):
@@ -442,7 +443,7 @@ class FixedLengthValue(Value):
         A value component lead by an optional preamble.
     """
     preamble = ""
-    length = None
+    length = None  # type: Optional[int]
 
     def __init__(self, value):
         Value.__init__(self, value)
@@ -511,7 +512,7 @@ class IntField(_Component):
     """
         An integer field, where values can optionally specified by name.
     """
-    names = {}
+    names: Dict[str, int] = {}
     max = 16
     preamble = ""
 
@@ -539,14 +540,13 @@ class IntField(_Component):
     def spec(self):
         return "%s%s" % (self.preamble, self.origvalue)
 
-
 class NestedMessage(Token):
 
     """
         A nested message, as an escaped string with a preamble.
     """
     preamble = ""
-    nest_type = None
+    nest_type: Optional[Union[ Type[Response], Type[WebsocketFrame]]] = None
 
     def __init__(self, value):
         Token.__init__(self)
