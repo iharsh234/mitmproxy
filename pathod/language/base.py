@@ -5,7 +5,7 @@ import functools
 import pyparsing as pp
 from mitmproxy.utils import strutils
 from mitmproxy.utils import human
-from typing import List, Tuple, Union, Optional, Dict, Type  # noqa
+import typing  # noqa
 from . import generators, exceptions
 
 
@@ -83,7 +83,7 @@ class Token:
         return None
 
     @property
-    def unique_name(self) -> Optional[str]:
+    def unique_name(self) -> typing.Optional[str]:
         """
             Controls uniqueness constraints for tokens. No two tokens with the
             same name will be allowed. If no uniquness should be applied, this
@@ -333,7 +333,7 @@ class OptionsOrValue(_Component):
         Can be any of a specified set of options, or a value specifier.
     """
     preamble = ""
-    options = []  # type: List[str]
+    options = []  # type: typing.List[str]
 
     def __init__(self, value):
         # If it's a string, we were passed one of the options, so we lower-case
@@ -375,7 +375,7 @@ class OptionsOrValue(_Component):
 
 
 class Integer(_Component):
-    bounds = (None, None)  # type: Tuple[Union[int, None], Union[int , None]]
+    bounds = (None, None)  # type: typing.Tuple[typing.Union[int, None], typing.Union[int , None]]
     preamble = ""
 
     def __init__(self, value):
@@ -441,7 +441,7 @@ class FixedLengthValue(Value):
         A value component lead by an optional preamble.
     """
     preamble = ""
-    length = None  # type: Optional[int]
+    length = None  # type: typing.Optional[int]
 
     def __init__(self, value):
         Value.__init__(self, value)
@@ -510,7 +510,7 @@ class IntField(_Component):
     """
         An integer field, where values can optionally specified by name.
     """
-    names = {}  # type: Dict[str, int]
+    names = {}  # type: typing.Dict[str, int]
     max = 16
     preamble = ""
 

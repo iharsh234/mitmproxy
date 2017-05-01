@@ -13,7 +13,7 @@ from pathod import language
 from pathod import utils
 from pathod import log
 from pathod import protocols
-from typing import Union  # noqa
+import typing  # noqa
 
 
 DEFAULT_CERT_DOMAIN = b"pathod.net"
@@ -69,7 +69,7 @@ class SSLOptions:
 
 class PathodHandler(tcp.BaseHandler):
     wbufsize = 0
-    sni = None  # type: Union[str, None, bool]
+    sni = None  # type: typing.Union[str, None, bool]
 
     def __init__(
         self,

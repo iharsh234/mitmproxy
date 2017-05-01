@@ -3,7 +3,7 @@ import time
 import queue
 from . import pathod
 from mitmproxy.types import basethread
-from typing import List, Dict
+import typing  # noqa
 
 
 class Daemon:
@@ -62,7 +62,7 @@ class Daemon:
             return None
         return l[-1]
 
-    def log(self) -> List[Dict]:
+    def log(self) -> typing.List[typing.Dict]:
         """
             Return the log buffer as a list of dictionaries.
         """

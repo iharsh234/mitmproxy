@@ -1,7 +1,7 @@
 import os
 import sys
 from mitmproxy.utils import data as mdata
-from typing import Optional  # noqa
+import typing  # noqa
 
 
 class MemBool:
@@ -11,7 +11,7 @@ class MemBool:
     """
 
     def __init__(self) -> None:
-        self.v = None  # type: Optional[bool]
+        self.v = None  # type: typing.Optional[bool]
 
     def __call__(self, v: bool) -> bool:
         self.v = v
