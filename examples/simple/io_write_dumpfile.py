@@ -8,7 +8,7 @@ to multiple files in parallel.
 import random
 import sys
 from mitmproxy import io, http
-from typing import IO, Any
+from typing import IO, Any  # noqa
 
 
 class Writer:

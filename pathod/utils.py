@@ -1,7 +1,7 @@
 import os
 import sys
 from mitmproxy.utils import data as mdata
-from typing import Optional
+from typing import Optional  # noqa
 
 
 class MemBool:

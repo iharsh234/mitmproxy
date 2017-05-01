@@ -3,20 +3,17 @@ import logging
 import os
 import sys
 import threading
-
 from mitmproxy.net import tcp
 from mitmproxy import certs as mcerts
 from mitmproxy.net import websockets
 from mitmproxy import version
-
 import urllib
 from mitmproxy import exceptions
-
 from pathod import language
 from pathod import utils
 from pathod import log
 from pathod import protocols
-from typing import Union
+from typing import Union  # noqa
 
 
 DEFAULT_CERT_DOMAIN = b"pathod.net"

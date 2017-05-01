@@ -3,7 +3,6 @@ import copy
 import random
 from functools import total_ordering
 import pyparsing as pp
-
 from . import base
 
 

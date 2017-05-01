@@ -4,7 +4,7 @@ import mitmproxy.net.websockets
 from mitmproxy.utils import strutils
 import pyparsing as pp
 from . import base, generators, actions, message
-from typing import Dict, Tuple, cast, Type
+from typing import Dict, Tuple, cast, Type  # noqa
 
 NESTED_LEADER = b"pathod!"
 
@@ -14,14 +14,14 @@ class WF(base.CaselessLiteral):
 
 
 class OpCode(base.IntField):
-    names: Dict[str, int] = {
+    names = {
         "continue": mitmproxy.net.websockets.OPCODE.CONTINUE,
         "text": mitmproxy.net.websockets.OPCODE.TEXT,
         "binary": mitmproxy.net.websockets.OPCODE.BINARY,
         "close": mitmproxy.net.websockets.OPCODE.CLOSE,
         "ping": mitmproxy.net.websockets.OPCODE.PING,
         "pong": mitmproxy.net.websockets.OPCODE.PONG,
-    }
+    }  # type: Dict[str, int]
     max = 15
     preamble = "c"
 
@@ -239,8 +239,14 @@ class NestedFrame(base.NestedMessage):
     preamble = "f"
     nest_type = WebsocketFrame
 
-COMP = Tuple[ Type[OpCode], Type[Length], Type[Fin], Type[RSV1], Type[RSV2], Type[RSV3], Type[Mask], Type[actions.PauseAt], Type[actions.DisconnectAt], Type[actions.InjectAt], Type[KeyNone], Type[Key], Type[Times], Type[Body], Type[RawBody]]
+
+COMP = Tuple[
+    Type[OpCode], Type[Length], Type[Fin], Type[RSV1], Type[RSV2], Type[RSV3], Type[Mask], Type[actions.PauseAt],
+    Type[actions.DisconnectAt], Type[actions.InjectAt], Type[KeyNone], Type[Key], Type[Times], Type[Body], Type[RawBody]
+]
+
+
 class WebsocketClientFrame(WebsocketFrame):
-    components = cast(COMP , COMPONENTS + (
+    components = cast(COMP, COMPONENTS + (
         NestedFrame,
     ))

@@ -5,10 +5,8 @@ import functools
 import pyparsing as pp
 from mitmproxy.utils import strutils
 from mitmproxy.utils import human
-from typing import List, Tuple , Union , Optional , Dict, Type
+from typing import List, Tuple, Union, Optional, Dict, Type  # noqa
 from . import generators, exceptions
-from .websockets import WebsocketFrame
-from .language.http2 import Response
 
 
 class Settings:
@@ -66,7 +64,7 @@ class Token:
     """
         A token in the specification language. Tokens are immutable. The token
         classes have no meaning in and of themselves, and are combined into
-        tos and Actions to build the language.
+        Components and Actions to build the language.
     """
     __metaclass__ = abc.ABCMeta
 
@@ -335,7 +333,7 @@ class OptionsOrValue(_Component):
         Can be any of a specified set of options, or a value specifier.
     """
     preamble = ""
-    options = []  #type: List
+    options = []  # type: List[str]
 
     def __init__(self, value):
         # If it's a string, we were passed one of the options, so we lower-case
@@ -512,7 +510,7 @@ class IntField(_Component):
     """
         An integer field, where values can optionally specified by name.
     """
-    names: Dict[str, int] = {}
+    names = {}  # type: Dict[str, int]
     max = 16
     preamble = ""
 
@@ -540,13 +538,14 @@ class IntField(_Component):
     def spec(self):
         return "%s%s" % (self.preamble, self.origvalue)
 
+
 class NestedMessage(Token):
 
     """
         A nested message, as an escaped string with a preamble.
     """
     preamble = ""
-    nest_type: Optional[Union[ Type[Response], Type[WebsocketFrame]]] = None
+    nest_type = None  # type: ignore
 
     def __init__(self, value):
         Token.__init__(self)
